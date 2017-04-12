@@ -9,4 +9,6 @@
 
 +(UIImage*)UIImageFromCVMat:(cv::Mat)cvMat;
 
++(NSInteger)getImageHeight:(NSString*)fileName;
+
 @end

@@ -45,7 +45,7 @@
     NSDictionary *list = [NSJSONSerialization JSONObjectWithData:listData options:kNilOptions error:nil];
     
 //    NSString *baseUrl = @"http://10.0.0.41:8081/get/%@/%d";
-    NSString *baseUrl = @"http://10.0.0.41:8081/get/%@/1-2";
+    NSString *baseUrl = @"http://10.0.0.41:8081/get/%@/1";
     NSLog(@"Loaded %lu images.", list.count);
     
     // save files here
@@ -57,26 +57,18 @@
     {
         NSString *imageUrl = [NSString stringWithFormat:baseUrl, imageName];
         NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl] options:kNilOptions error:nil];
-        NSLog(@"Downloaded image: %@ (%lu B)", imageUrl, imageData.length);
+//        NSLog(@"Downloaded image: %@ (%lu B)", imageUrl, imageData.length);
         
         NSURL *cachedImageUrl = [cacheUrl URLByAppendingPathComponent:imageName];
         [imageData writeToURL:cachedImageUrl atomically:true];
         
-        NSLog(@"cachedImageUrl: %@", cachedImageUrl);
+//        NSLog(@"cachedImageUrl: %@", cachedImageUrl);
         
         [self.objects insertObject:cachedImageUrl.relativePath atIndex:0];
     }
+    
+    NSLog(@"self.objects.count: %lu", self.objects.count);
 }
-
-//- (void)insertNewObject:(NSString*)path
-//{
-//    if (!self.objects)
-//        self.objects = [[NSMutableArray alloc] init];
-//    
-//    [self.objects insertObject:path atIndex:0];
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//    [self.collectionView insertItemsAtIndexPaths:@[indexPath]];
-//}
 
 #pragma mark - Segues
 
@@ -93,16 +85,8 @@
 
 #pragma mark - Collection View
 
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
-
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    NSLog(@"self.objects.count: %lu", self.objects.count);
-    return self.objects.count;
-}
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView { return 1; }
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section { return self.objects.count; }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
